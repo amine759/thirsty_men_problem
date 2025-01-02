@@ -1,1 +1,93 @@
+* This is a non-zero-sum game with imperfect information
+* First mover has advantage (can secure first position)
+* Last mover has advantage (can secure last position)
+* Middle positions are guaranteed to lose
 
+
+Aspects to Consider:
+
+1. The Prisoner's Dilemma Aspect:
+
+* Everyone wants water
+* Only first and last positions get water
+* No one wants to place their cup in middle positions (guaranteed loss)
+* If no one places their cup, everyone stays thirsty (deadlock)
+
+2.  Strategic Behaviors:
+
+* Everyone wants to be either first or last
+* No one wants to be in the middle
+* People might wait for others to place first to try to secure the last position
+* Some might rush to get the first position
+
+3.  Potential Cheating Behaviors:
+
+* Quickly removing cup if they see they won't get water
+* Coordinating with others to exclude certain people
+* Making false moves to bait others
+
+4. Game Theory Analysis: Without any additional rules or incentives, the most likely scenarios are:
+    a) Deadlock:
+
+    * Everyone waits for others to move first
+    * No one wants to risk middle position
+    * Result: No one gets water
+    * A given participant may block the process by not subscribing to the game and claiming an incentive
+    
+    b) Race Condition:
+    
+    * Everyone rushes to be first
+
+**My answer supposes the objective of the problem is to achieve the fairest approach so that each guest have equal chance to have their cup in either the first and last position, and none can dominate the game given all previous constraints**
+
+we will need to setup a Timeout, otherwise the game will not end, yet it ensures everyone gets a fairest chance to win without cheating. 
+
+1. Step 1 : Setup Tickets numbers : 
+* Every guest gets a special numbered ticket at the start
+* The numbers are randomly given out
+* Your ticket number determines **when** you can place your cup
+
+2. Step2 : Taking Turns:
+
+* Instead of everyone rushing at once, each person gets a specific time to place their cup
+* Like when you're in line at a coffee shop, each person gets their turn
+* Example: Guest 1 gets 30 seconds to decide, then Guest 2 gets their 30 seconds, and so on
+
+3.  Keeping Track of Winners:
+
+* We keep a list of who got the good spots (first and last positions)
+* If you got lucky in one round, you'll have lower priority in the next round (priority means you are either the first or last to put your cup)
+* Like giving everyone a chance to ride the best ride at an amusement park
+
+4.  How a Round Works:
+
+Step 1: Giving Out Tickets
+
+* Everyone gets a random number (like pulling numbers from a hat)
+* The lower your number, the earlier your turn
+
+Step 2: Taking Turns
+
+* Person with ticket #1 gets first chance to choose
+* They can pick either first or last position
+* Then person with ticket #2 gets their turn
+* And so on until all positions are filled
+
+Step 3: Starting Over
+
+* After each round, new tickets are given out
+* But this time, people who haven't had good spots get better numbers
+* Like giving extra raffle tickets to people who haven't won yet.
+
+The rounds will continue till timeout, this timeout should be set carefully, according to the number of rounds, 
+in fact let's say the number N of participant that means if rounds are N, this will make 2 participants have the best position at least once, and given that we have N rounds, this will make first advantagious participants loose eventually.
+so the number of rounds should be large enough, like N*5 rounds which will take like : 
+
+ T = R*N* 30 sec (30 second is the max time for decision of each participant)
+ where R is the total number of rounds
+ 
+so we know : R = 5*N
+
+so the total time would be : T = 5*N^2 * 30 
+
+for the largest N = 15 : T = 5*15^2*30 = 33750 seconds (562.5 minutes,  9 hours and 22.5 minutes)
